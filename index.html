@@ -1084,7 +1084,7 @@ async function joinLookup(){
 let _selTeam='';
 function renderTeamPicker(room){
   _selTeam='';
-  document.getElementById('team-grid').innerHTML=room.teams.map(t=>`
+  document.getElementById('team-grid').innerHTML=Object.values(room.teams||{}).map(t=>`
     <div id="tc-${t.id}" onclick="pickTeam('${t.id}')"
       style="background:${t.color}12;border:2px solid ${t.color}33;border-radius:12px;padding:1.1rem;cursor:pointer;text-align:center;transition:all .2s;">
       <div style="font-size:28px;margin-bottom:7px;">${t.emoji}</div>
@@ -1097,7 +1097,7 @@ function pickTeam(id){_selTeam=id;TEAMS.forEach(t=>{const el=document.getElement
 function confirmTeam(){
   if(!_selTeam){notify('Pick a team!');return;}
   const room=getRoom(S.roomCode);
-  const team=room.teams.find(t=>t.id===_selTeam);if(!team)return;
+  const team=Object.values(room.teams||{}).find(t=>t.id===_selTeam);if(!team)return;
   if(team.players.includes(S.playerName)){notify('Name already taken!');return;}
   team.players.push(S.playerName);saveRoom(S.roomCode,room);
   S.teamId=_selTeam;S.myColor=TEAMS.find(t=>t.id===_selTeam).color;
